@@ -1,7 +1,7 @@
 module Stimul8
   module Component
     module Models
-      require "base64"
+      require "securerandom"
       extend ActiveSupport::Concern
 
       class_methods do
@@ -20,20 +20,12 @@ module Stimul8
         end
 
         def recreate component_id
-          decoded = JSON.parse(Base64.urlsafe_decode64(component_id))
-          ids = decoded.transform_keys { |key| key.to_sym }
-          new(**ids)
+          new(component_id: component_id)
         end
       end
 
       def component_id
-        Base64.urlsafe_encode64(model_ids.to_json)
-      end
-
-      def model_ids
-        models.to_h do |name, model|
-          [:"#{name}_id", model.id]
-        end
+        @component_id ||= SecureRandom.uuid
       end
 
       protected

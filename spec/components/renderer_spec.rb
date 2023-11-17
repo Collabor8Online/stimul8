@@ -1,34 +1,22 @@
 require "rails_helper"
+require_relative "classes"
 
 RSpec.describe "Component rendering" do
-  it "renders html" do
-    component_class = Class.new do
-      include Stimul8::Component
-
-      template do
-        div class: "container" do
-          p "Hello World"
-        end
-      end
-    end
-
-    doc = Nokogiri::HTML(component_class.new.to_html)
-    expect(doc.css("div.container p").text).to eq("Hello World")
+  it "renders properties" do
+    component = NameBadgeComponent.new(name: "Alice")
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div.badge p").text).to eq("Hello Alice")
   end
 
-  it "renders properties" do
-    component_class = Class.new do
-      include Stimul8::Component
-      property :name
+  it "renders a container div" do
+    component = NameBadgeComponent.new(name: "Alice")
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.css_class}")).to be_present
+  end
 
-      template do
-        div class: "container" do
-          p "Hello #{@name}"
-        end
-      end
-    end
-
-    doc = Nokogiri::HTML(component_class.new(name: "Alice").to_html)
-    expect(doc.css("div.container p").text).to eq("Hello Alice")
+  it "allows for an alternative container tag" do
+    component = SidebarComponent.new
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("aside##{component.component_id}.#{component.css_class}")).to be_present
   end
 end

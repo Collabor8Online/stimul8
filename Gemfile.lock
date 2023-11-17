@@ -4,6 +4,7 @@ PATH
     stimul8 (0.1.0)
       markaby
       rails (>= 7.0.5)
+      securerandom
 
 GEM
   remote: https://rubygems.org/
@@ -220,6 +221,7 @@ GEM
       rubocop-ast (>= 0.4.0)
     ruby-progressbar (1.13.0)
     ruby2_keywords (0.0.5)
+    securerandom (0.3.0)
     sprockets (4.2.1)
       concurrent-ruby (~> 1.0)
       rack (>= 2.2.4, < 4)

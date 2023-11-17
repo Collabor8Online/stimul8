@@ -3,20 +3,39 @@ module Stimul8
     module Properties
       extend ActiveSupport::Concern
       class_methods do
-        def property name, type: String, nil: true, &validator
+        def property name, type: :string, nil: true, default: nil, &validator
+          properties << name.to_sym
+
           define_method name.to_sym do
-            instance_variable_get("@#{name}")
+            read(component_id, name) || default
           end
 
-          define_method :"#{name}=" do |value|
-            raise ArgumentError.new("#{name} must be a #{type}") unless value.is_a?(type)
-            raise ArgumentError.new("#{value} is not a valid value for #{name}") if validator && !validator.call(value)
-            instance_variable_set("@#{name}", value)
+          if type != :boolean
+            type_class = type.to_s.classify.constantize
+
+            define_method :"#{name}=" do |value|
+              raise ArgumentError.new("#{name} must be a #{type}") unless value.is_a?(type_class)
+              raise ArgumentError.new("#{value} is not a valid value for #{name}") if validator && !validator.call(value)
+              write component_id, name, value
+            end
+          else
+            define_method :"#{name}?" do
+              (send(name.to_sym) == true)
+            end
+
+            define_method :"#{name}=" do |value|
+              write component_id, name, ActiveRecord::Type::Boolean.new.cast(value)
+            end
           end
+        end
+
+        def properties
+          @properties ||= Set.new
         end
       end
 
-      def initialize **params
+      def initialize component_id: nil, **params
+        @component_id = component_id
         params.each do |key, value|
           send(:"#{key}=", value)
         end

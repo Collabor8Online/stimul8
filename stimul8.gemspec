@@ -24,4 +24,5 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.0.5"
   spec.add_dependency "markaby"
+  spec.add_dependency "securerandom"
 end
