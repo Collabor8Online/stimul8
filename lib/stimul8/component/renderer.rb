@@ -4,26 +4,6 @@ module Stimul8
       require "markaby"
       extend ActiveSupport::Concern
 
-      def to_html
-        Markaby::Builder.new({}, self) do
-          tag! tag_name, class: css_class, id: component_id do
-            instance_eval(&template)
-          end
-        end.to_s
-      end
-
-      def css_class
-        self.class.name.underscore.dasherize
-      end
-
-      def template
-        self.class.template_block
-      end
-
-      def tag_name
-        self.class.tag_name || :div
-      end
-
       class_methods do
         def template &block
           @template_block = block
@@ -33,8 +13,65 @@ module Stimul8
           @tag_name = tag_name
         end
 
+        def style selector, rule
+          styles[selector.to_s] ||= []
+          styles[selector.to_s] << rule.to_s
+        end
+
+        def styles
+          @styles ||= {}
+        end
+
         attr_reader :template_block
         attr_reader :tag_name
+      end
+
+      def to_html
+        Markaby::Builder.new({}, self) do
+          tag! tag_name, id: component_id, class: css_class, **expanded_attributes do
+            instance_eval(&template)
+          end
+        end.to_s
+      end
+
+      def component_class
+        @component_class ||= self.class.name.underscore.dasherize
+      end
+
+      def css_class
+        [component_class, @attributes[:class]].compact.join(" ")
+      end
+
+      def template
+        self.class.template_block
+      end
+
+      def tag_name
+        @tag_name ||= self.class.tag_name || :div
+      end
+
+      def stylesheet
+        return @stylesheet unless @stylesheet.blank?
+        @stylesheet = self.class.styles.map do |selector, rules|
+          selection_rule = ".#{component_class} #{selector} {\n"
+          rules.each do |rule|
+            selection_rule += "  #{rule}\n"
+          end
+          selection_rule += "}"
+          selection_rule
+        end.join("\n")
+      end
+
+      def expanded_attributes
+        return @expanded_attributes unless @expanded_attributes.nil?
+
+        @expanded_attributes = @attributes.except(:class)
+        @expanded_attributes[:data] ||= {}
+        controller = ["stimul8", @expanded_attributes[:data][:controller]].compact.join(" ")
+        @expanded_attributes[:data][:controller] = controller
+        @expanded_attributes = @expanded_attributes.transform_keys do |key|
+          key.to_s.dasherize.to_sym
+        end
       end
     end
   end

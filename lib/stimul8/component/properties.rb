@@ -34,8 +34,9 @@ module Stimul8
         end
       end
 
-      def initialize component_id: nil, **params
+      def initialize component_id: nil, attributes: {}, **params
         @component_id = component_id
+        @attributes = attributes
         params.each do |key, value|
           send(:"#{key}=", value)
         end

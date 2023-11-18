@@ -36,4 +36,8 @@ class SidebarComponent
       li "Item 2"
     end
   end
+
+  style "ul.menu", "background-color: #fff;"
+  style "ul.menu", "font-size: 18px;"
+  style "ul.menu li", "font-size: 14px;"
 end

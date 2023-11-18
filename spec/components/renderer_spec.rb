@@ -11,12 +11,44 @@ RSpec.describe "Component rendering" do
   it "renders a container div" do
     component = NameBadgeComponent.new(name: "Alice")
     doc = Nokogiri::HTML component.to_html
-    expect(doc.css("div##{component.component_id}.#{component.css_class}")).to be_present
+    expect(doc.css("div##{component.component_id}.#{component.component_class}")).to be_present
   end
 
   it "allows for an alternative container tag" do
     component = SidebarComponent.new
     doc = Nokogiri::HTML component.to_html
-    expect(doc.css("aside##{component.component_id}.#{component.css_class}")).to be_present
+    expect(doc.css("aside##{component.component_id}.#{component.component_class}")).to be_present
+  end
+
+  it "renders a container div with additional classes" do
+    component = NameBadgeComponent.new(name: "Alice", attributes: {class: "selected"})
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class}.selected")).to be_present
+  end
+
+  it "renders a container div with additional attributes" do
+    component = NameBadgeComponent.new(name: "Alice", attributes: {style: "display: none;"})
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[style=\"display: none;\"]")).to be_present
+  end
+
+  it "includes the stimul8 stimulus controller" do
+    component = NameBadgeComponent.new(name: "Alice")
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8\"]")).to be_present
+  end
+
+  it "allows extra controllers to be defined" do
+    component = NameBadgeComponent.new(name: "Alice", attributes: {data: {controller: "my-controller"}})
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8 my-controller\"]")).to be_present
+  end
+
+  it "generates a stylesheet" do
+    component = SidebarComponent.new
+    parser = CssParser::Parser.new
+    parser.load_string! component.stylesheet
+    expect(parser.find_by_selector(".sidebar-component ul.menu").first).to eq "background-color: #fff; font-size: 18px;"
+    expect(parser.find_by_selector(".sidebar-component ul.menu li").first).to eq "font-size: 14px;"
   end
 end
