@@ -3,7 +3,7 @@
 /log/*.log
 /pkg/
 /tmp/
-/test/app/db/*.sqlite3
-/test/app/db/*.sqlite3-*
-/test/app/log/*.log
-/test/app/tmp/
+/spec/app/db/*.sqlite3
+/spec/app/db/*.sqlite3-*
+/spec/app/log/*.log
+/spec/app/tmp/
