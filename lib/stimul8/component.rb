@@ -4,11 +4,23 @@ module Stimul8
     require "stimul8/component/storage"
     require "stimul8/component/core"
     require "stimul8/component/models"
+    require "stimul8/component/actions"
 
     included do
       include Stimul8::Component::Storage
       include Stimul8::Component::Core
       include Stimul8::Component::Models
+      include Stimul8::Component::Actions
+    end
+
+    class << self
+      def component(component_class, properties = {}, &contents)
+        component_class = "#{component_class.to_s.classify}Component"
+        component = component_class.constantize.new(**properties, &contents)
+        component.to_html.html_safe
+      end
+
+      alias_method :c, :component
     end
   end
 end

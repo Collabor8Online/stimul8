@@ -52,13 +52,6 @@ module Stimul8
           @styles ||= {}
         end
 
-        def component(component_class, properties = {}, &contents)
-          component_class = "#{component_class.to_s.classify}Component"
-          component = component_class.constantize.new(**properties, &contents)
-          component.to_html
-        end
-
-        alias_method :c, :component
         attr_reader :template_block
         attr_reader :tag_name
       end
@@ -97,7 +90,7 @@ module Stimul8
       end
 
       def component(component_class, properties = {}, &contents) # standard:disable Style/ArgumentsForwarding
-        self.class.component(component_class, properties, &contents) # standard:disable Style/ArgumentsForwarding
+        Stimul8::Component.component(component_class, properties, &contents) # standard:disable Style/ArgumentsForwarding
       end
       alias_method :c, :component
 
