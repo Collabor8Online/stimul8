@@ -2,22 +2,30 @@ require "rails_helper"
 require_relative "classes"
 
 RSpec.describe "Component rendering" do
-  it "renders properties" do
-    component = NameBadgeComponent.new(name: "Alice")
-    doc = Nokogiri::HTML component.to_html
-    expect(doc.css("div.badge p").text).to eq("Hello Alice")
-  end
-
   it "renders a container div" do
     component = NameBadgeComponent.new(name: "Alice")
     doc = Nokogiri::HTML component.to_html
     expect(doc.css("div##{component.component_id}.#{component.component_class}")).to be_present
   end
 
-  it "allows for an alternative container tag" do
+  it "renders an alternative container tag" do
     component = SidebarComponent.new
     doc = Nokogiri::HTML component.to_html
     expect(doc.css("aside##{component.component_id}.#{component.component_class}")).to be_present
+  end
+
+  it "renders contents passed as a block" do
+    component = ContentComponent.new do
+      "<p>Hello</p>"
+    end
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class} p").text).to eq "Hello"
+  end
+
+  it "renders properties" do
+    component = NameBadgeComponent.new(name: "Alice")
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div.badge p").text).to eq("Hello Alice")
   end
 
   it "renders a container div with additional classes" do
@@ -38,10 +46,16 @@ RSpec.describe "Component rendering" do
     expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8\"]")).to be_present
   end
 
-  it "allows extra controllers to be defined" do
+  it "allows extra stimulus controllers to be connected" do
     component = NameBadgeComponent.new(name: "Alice", attributes: {data: {controller: "my-controller"}})
     doc = Nokogiri::HTML component.to_html
     expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8 my-controller\"]")).to be_present
+  end
+
+  it "renders other components inside a component" do
+    component = EmbeddedComponent.new(name: "Alice")
+    doc = Nokogiri::HTML component.to_html
+    expect(doc.css("div##{component.component_id}.#{component.component_class} div.badge p").text).to eq "Hello Alice"
   end
 
   it "generates a stylesheet" do

@@ -41,3 +41,19 @@ class SidebarComponent
   style "ul.menu", "font-size: 18px;"
   style "ul.menu li", "font-size: 14px;"
 end
+
+class ContentComponent
+  include Stimul8::Component
+
+  template do
+    contents
+  end
+end
+
+class EmbeddedComponent
+  include Stimul8::Component
+  property :name
+  template do
+    component "name_badge", name: name
+  end
+end
