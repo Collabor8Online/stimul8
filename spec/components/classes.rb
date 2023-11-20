@@ -15,6 +15,15 @@ Person = Struct.new(:id, :name) do # standard:disable Lint/ConstantDefinitionInB
   end
 end
 
+class ConditionalRenderComnpontent
+  include Stimul8::Component
+  render_if { context == "Alice" }
+
+  template do
+    p "Hello"
+  end
+end
+
 class NameBadgeComponent
   include Stimul8::Component
   property :name

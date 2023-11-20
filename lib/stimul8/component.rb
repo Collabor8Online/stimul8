@@ -13,6 +13,12 @@ module Stimul8
       include Stimul8::Component::Actions
     end
 
+    class_methods do
+      def recreate component_id, context: nil
+        new(component_id: component_id, context: context)
+      end
+    end
+
     class << self
       def component(component_class, properties = {}, &contents)
         component_class = "#{component_class.to_s.classify}Component"

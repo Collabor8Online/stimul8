@@ -2,6 +2,13 @@ require "rails_helper"
 require_relative "classes"
 
 RSpec.describe "Component rendering" do
+  it "renders based on the value of the supplied context" do
+    component = ConditionalRenderComnpontent.new context: "Alice"
+    expect(component.to_html).to include("Hello")
+    component = ConditionalRenderComnpontent.new context: nil
+    expect(component.to_html).to be_blank
+  end
+
   it "renders a container div" do
     component = NameBadgeComponent.new(name: "Alice")
     doc = Nokogiri::HTML component.to_html

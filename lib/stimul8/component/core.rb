@@ -5,6 +5,10 @@ module Stimul8
       extend ActiveSupport::Concern
 
       class_methods do
+        def render_if &block
+          @render_if_block = block
+        end
+
         def template &block
           @template_block = block
         end
@@ -52,11 +56,13 @@ module Stimul8
           @styles ||= {}
         end
 
+        attr_reader :render_if_block
         attr_reader :template_block
         attr_reader :tag_name
       end
 
-      def initialize component_id: nil, attributes: {}, **properties, &contents
+      def initialize context: nil, component_id: nil, attributes: {}, **properties, &contents
+        @context = context
         @component_id = component_id
         @attributes = attributes
         @contents = contents
@@ -66,6 +72,7 @@ module Stimul8
       end
 
       def to_html
+        return "" unless render?
         Markaby::Builder.new({}, self) do
           tag! tag_name, id: component_id, class: css_class, **expanded_attributes do
             instance_eval(&template)
@@ -87,6 +94,10 @@ module Stimul8
 
       def contents
         @contents&.call.to_s
+      end
+
+      def context
+        @context.freeze
       end
 
       def component(component_class, properties = {}, &contents) # standard:disable Style/ArgumentsForwarding
@@ -120,6 +131,10 @@ module Stimul8
         @expanded_attributes = @expanded_attributes.transform_keys do |key|
           key.to_s.dasherize.to_sym
         end
+      end
+
+      def render?
+        self.class.render_if_block.nil? || instance_eval(&self.class.render_if_block)
       end
     end
   end

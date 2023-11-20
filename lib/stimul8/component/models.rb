@@ -18,10 +18,6 @@ module Stimul8
             models[name.to_sym] ||= class_name.constantize.find(send(:"#{name}_id"))
           end
         end
-
-        def recreate component_id
-          new(component_id: component_id)
-        end
       end
 
       def component_id
