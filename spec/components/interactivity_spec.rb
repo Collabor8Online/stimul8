@@ -8,7 +8,8 @@ RSpec.describe "Component actions", type: :system do
 
   it "triggers a component action" do
     visit "/simple_action"
-    puts page.body
+    click_button "Trigger action"
+    expect(page).to have_content("Action triggered")
   end
 
   it "triggers a component action with a parameter"
