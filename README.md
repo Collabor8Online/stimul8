@@ -62,7 +62,10 @@ $ bundle
   - [ ] From descendant components
 - [ ] General Event handling
 - [ ] Rails Cache and Redis storage engines
-- [ ] ERB and other template engines
+- [ ] Templates
+  - [ ] Replace Markaby with [Phlex](https://www.phlex.fun)
+  - [ ] ERB and other template engines
+- [ ] Custom elements - replace Stimulus with generated custom elements?
 
 ## Contributing
 
