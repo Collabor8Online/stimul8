@@ -24,7 +24,7 @@ My aim is to:
 
 ## Usage
 
-To get started check out the [glossary](/docs/glossary.md).
+To get started check out the [glossary](/docs/glossary.md) and take a look at the [component lifecycle](/docs/lifecycle.md).
 
 Then: 
 * Open your Rails app
@@ -48,7 +48,7 @@ $ bundle
 
 ## To-Do List
 
-- [ ] Rename model stuff to represents as it reads better
+- [X] Rename model stuff to represents as it reads better
 - [ ] Finish off Actions
   - [ ] Basic implementation
   - [ ] Authorisation

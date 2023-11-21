@@ -6,7 +6,7 @@ RSpec.describe "Component storage" do
     it "stores and retrieves property values associated with the components ID" do
       component_class = Class.new do
         include Stimul8::Component
-        model :person
+        represents :person
         property :selected, type: :boolean, default: false
       end
       bob = Person.new(1, "Bob")

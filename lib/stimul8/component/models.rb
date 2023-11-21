@@ -5,7 +5,7 @@ module Stimul8
       extend ActiveSupport::Concern
 
       class_methods do
-        def model name, class_name: nil
+        def represents name, class_name: nil
           class_name ||= name.to_s.classify
           property :"#{name}_id", type: Object
 

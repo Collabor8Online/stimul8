@@ -1,21 +1,21 @@
 require "rails_helper"
 require_relative "classes"
 
-RSpec.describe "Component models" do
-  it "defines models using an ID" do
+RSpec.describe "Linking components to models" do
+  it "finds its models using an ID" do
     component_class = Class.new do
       include Stimul8::Component
-      model :person
+      represents :person
     end
     bob = Person.new(1, "Bob")
     component = component_class.new(person: bob)
     expect(component.person_id).to eq bob.id
   end
 
-  it "accepts a nil model" do
+  it "does not have to be linked to a model" do
     component_class = Class.new do
       include Stimul8::Component
-      model :person
+      represents :person
     end
     component = component_class.new(person: nil)
     expect(component.person_id).to be_nil
@@ -24,28 +24,28 @@ RSpec.describe "Component models" do
   it "loads the model on demand" do
     component_class = Class.new do
       include Stimul8::Component
-      model :person
+      represents :person
     end
     bob = Person.new(1, "Bob")
     component = component_class.new(person: bob)
     expect(component.person).to eq bob
   end
 
-  it "allows a custom class name" do
+  it "allows an overridden class name" do
     component_class = Class.new do
       include Stimul8::Component
-      model :owner, class_name: "Person"
+      represents :owner, class_name: "Person"
     end
     bob = Person.new(1, "Bob")
     component = component_class.new(owner: bob)
     expect(component.owner).to eq bob
   end
 
-  it "recreates a component from a component ID" do
+  it "locates the models when the component is recreated" do
     component_class = Class.new do
       include Stimul8::Component
-      model :father, class_name: "Person"
-      model :mother, class_name: "Person"
+      represents :father, class_name: "Person"
+      represents :mother, class_name: "Person"
     end
     bob = Person.new(1, "Bob")
     alice = Person.new(2, "Alice")
