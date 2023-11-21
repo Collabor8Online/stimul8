@@ -56,6 +56,7 @@ $ bundle
 - [ ] Active and Passive components
 - [ ] Add support for slots
 - [ ] Morphdom
+- [ ] Get stylesheet generation working properly (and rewrite the `styles` stuff as it's ugly)
 - [ ] Reactive Event handling 
   - [ ] From model changes
   - [ ] From descendant components
