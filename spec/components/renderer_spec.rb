@@ -3,16 +3,16 @@ require_relative "classes"
 
 RSpec.describe "Component rendering" do
   it "renders based on the value of the supplied context" do
-    component = ConditionalRenderComnpontent.new context: "Alice"
+    component = ConditionalRenderComponent.new context: "Alice"
     expect(component.to_html).to include("Hello")
-    component = ConditionalRenderComnpontent.new context: nil
+    component = ConditionalRenderComponent.new context: nil
     expect(component.to_html).to be_blank
   end
 
   it "renders a container div" do
     component = NameBadgeComponent.new(name: "Alice")
     doc = Nokogiri::HTML component.to_html
-    expect(doc.css("div##{component.component_id}.#{component.component_class}")).to be_present
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-stimul8-class-name-value=\"NameBadgeComponent\"]")).to be_present
   end
 
   it "renders an alternative container tag" do
@@ -50,13 +50,13 @@ RSpec.describe "Component rendering" do
   it "includes the stimul8 stimulus controller" do
     component = NameBadgeComponent.new(name: "Alice")
     doc = Nokogiri::HTML component.to_html
-    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8\"]")).to be_present
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-stimul8-class-name-value=\"NameBadgeComponent\"][data-controller=\"stimul8\"]")).to be_present
   end
 
   it "allows extra stimulus controllers to be connected" do
     component = NameBadgeComponent.new(name: "Alice", attributes: {data: {controller: "my-controller"}})
     doc = Nokogiri::HTML component.to_html
-    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-controller=\"stimul8 my-controller\"]")).to be_present
+    expect(doc.css("div##{component.component_id}.#{component.component_class}[data-stimul8-class-name-value=\"NameBadgeComponent\"][data-controller=\"stimul8 my-controller\"]")).to be_present
   end
 
   it "renders other components inside a component" do

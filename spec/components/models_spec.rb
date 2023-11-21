@@ -51,7 +51,7 @@ RSpec.describe "Component models" do
     alice = Person.new(2, "Alice")
     component_id = component_class.new(father: bob, mother: alice).component_id
 
-    component = component_class.recreate(component_id)
+    component = component_class.new(component_id: component_id)
     expect(component.father).to eq bob
     expect(component.mother).to eq alice
   end

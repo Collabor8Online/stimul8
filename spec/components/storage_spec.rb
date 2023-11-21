@@ -14,7 +14,7 @@ RSpec.describe "Component storage" do
       component_id = component.component_id
       component.selected = true
 
-      new_component = component_class.recreate(component_id)
+      new_component = component_class.new(component_id: component_id)
       expect(new_component.selected).to eq true
     end
   end

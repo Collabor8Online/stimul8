@@ -15,7 +15,7 @@ Person = Struct.new(:id, :name) do # standard:disable Lint/ConstantDefinitionInB
   end
 end
 
-class ConditionalRenderComnpontent
+class ConditionalRenderComponent
   include Stimul8::Component
   render_if { context == "Alice" }
 
@@ -69,6 +69,7 @@ end
 
 class DefaultActionComponent
   include Stimul8::Component
+  property :done, type: :boolean, default: false
   template do
     button action(:do_something)
   end

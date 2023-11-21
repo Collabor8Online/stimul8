@@ -1,9 +1,20 @@
 import { Controller } from "@hotwired/stimulus"
+import { componentSubscription } from "@rails/actioncable"
+import morphdom from "morphdom"
 
-// Connects to data-controller="stimul8"
 export default class extends Controller {
+  static values = { className: String }
+  connect() {
+    this.subscription = componentSubscription(this.element.id, this.classNameValue, this.element)
+  }
 
-  async callAction(event) {
+  disconnect() {
+    this.subscription.unsubscribe()
+  }
+
+  async performAction(event) {
     event.preventDefault();
+    this.subscription.performAction(event.params)
   }
 }
+

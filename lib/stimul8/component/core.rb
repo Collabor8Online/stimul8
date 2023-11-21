@@ -21,7 +21,7 @@ module Stimul8
           properties << name.to_sym
 
           define_method name.to_sym do
-            read(component_id, name) || default
+            read(name) || default
           end
 
           if type != :boolean
@@ -30,7 +30,7 @@ module Stimul8
             define_method :"#{name}=" do |value|
               raise ArgumentError.new("#{name} must be a #{type}") unless value.is_a?(type_class)
               raise ArgumentError.new("#{value} is not a valid value for #{name}") if validator && !validator.call(value)
-              write component_id, name, value
+              write name, value
             end
           else
             define_method :"#{name}?" do
@@ -38,7 +38,7 @@ module Stimul8
             end
 
             define_method :"#{name}=" do |value|
-              write component_id, name, ActiveRecord::Type::Boolean.new.cast(value)
+              write name, ActiveRecord::Type::Boolean.new.cast(value)
             end
           end
         end
@@ -59,16 +59,6 @@ module Stimul8
         attr_reader :render_if_block
         attr_reader :template_block
         attr_reader :tag_name
-      end
-
-      def initialize context: nil, component_id: nil, attributes: {}, **properties, &contents
-        @context = context
-        @component_id = component_id
-        @attributes = attributes
-        @contents = contents
-        properties.each do |key, value|
-          send(:"#{key}=", value)
-        end
       end
 
       def to_html
@@ -128,6 +118,7 @@ module Stimul8
         @expanded_attributes[:data] ||= {}
         controller = ["stimul8", @expanded_attributes[:data][:controller]].compact.join(" ")
         @expanded_attributes[:data][:controller] = controller
+        @expanded_attributes[:data][:stimul8_class_name_value] = self.class.name
         @expanded_attributes = @expanded_attributes.transform_keys do |key|
           key.to_s.dasherize.to_sym
         end
@@ -135,6 +126,10 @@ module Stimul8
 
       def render?
         self.class.render_if_block.nil? || instance_eval(&self.class.render_if_block)
+      end
+
+      def == other
+        other.component_id == component_id
       end
     end
   end

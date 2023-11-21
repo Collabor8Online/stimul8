@@ -5,21 +5,21 @@ module Stimul8
     require "stimul8/component/core"
     require "stimul8/component/models"
     require "stimul8/component/actions"
+    require "stimul8/component/create"
 
     included do
       include Stimul8::Component::Storage
       include Stimul8::Component::Core
       include Stimul8::Component::Models
       include Stimul8::Component::Actions
-    end
-
-    class_methods do
-      def recreate component_id, context: nil
-        new(component_id: component_id, context: context)
-      end
+      include Stimul8::Component::Create
     end
 
     class << self
+      def recreate component_class, component_id, context: nil
+        component_class.constantize.new(component_id: component_id, context: context)
+      end
+
       def component(component_class, properties = {}, &contents)
         component_class = "#{component_class.to_s.classify}Component"
         component = component_class.constantize.new(**properties, &contents)
@@ -27,6 +27,9 @@ module Stimul8
       end
 
       alias_method :c, :component
+    end
+
+    class NotFound < Stimul8::Error
     end
   end
 end

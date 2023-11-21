@@ -3,7 +3,7 @@ module Stimul8
     module Storage
       extend ActiveSupport::Concern
 
-      class_methods do
+      class << self
         def storage_engine
           @@storage_engine ||= Stimul8::Storage::InMemory.new
         end
@@ -11,16 +11,16 @@ module Stimul8
 
       protected
 
-      def write component_id, property_name, value
+      def write property_name, value
         storage_engine.write component_id, property_name, value
       end
 
-      def read component_id, property_name
+      def read property_name
         storage_engine.read component_id, property_name
       end
 
       def storage_engine
-        self.class.storage_engine
+        Stimul8::Component::Storage.storage_engine
       end
     end
   end
