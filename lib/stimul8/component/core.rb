@@ -70,8 +70,12 @@ module Stimul8
         end.to_s
       end
 
+      def component_id
+        @component_id ||= SecureRandom.uuid
+      end
+
       def component_class
-        @component_class ||= self.class.name.underscore.dasherize
+        @component_class ||= self.class.name.underscore.dasherize.gsub("/", "--")
       end
 
       def css_class

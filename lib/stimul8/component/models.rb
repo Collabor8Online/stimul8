@@ -20,10 +20,6 @@ module Stimul8
         end
       end
 
-      def component_id
-        @component_id ||= SecureRandom.uuid
-      end
-
       protected
 
       def models
