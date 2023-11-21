@@ -1,6 +1,6 @@
 # Stimul8
 
-All the advantages of client-side components, but with minimal Javascript and server-side rendering
+All the advantages of client-side components, plus with minimal Javascript and server-side rendering
 
 * Design your user-interface from discrete components, each representing one small aspect of your application.  
 * Reuse common interface patterns and encapsulate styles.  

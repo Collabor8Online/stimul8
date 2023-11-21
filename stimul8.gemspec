@@ -5,21 +5,19 @@ Gem::Specification.new do |spec|
   spec.version = Stimul8::VERSION
   spec.authors = ["Rahoul Baruah"]
   spec.email = ["baz@collabor8online.co.uk"]
-  spec.homepage = "https://www.collabor8online.co.uk"
+  spec.homepage = "https://github.com/Collabor8Online/stimul8"
   spec.summary = "Stimulus based components for Rails"
-  spec.description = "Stimulus based components for Rails"
-  spec.license = "MIT"
+  spec.description = "All the advantages of client-side components, but with minimal Javascript plus server-side rendering"
+  spec.license = "LGPL"
 
-  # Prevent pushing this gem to RubyGems.org. To allow pushes either set the "allowed_push_host"
-  # to allow pushing to a single host or delete this section to allow pushing to any host.
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
   spec.metadata["homepage_uri"] = spec.homepage
-  spec.metadata["source_code_uri"] = "https://github.com"
-  spec.metadata["changelog_uri"] = "https://github.com"
+  spec.metadata["source_code_uri"] = "https://github.com/Collabor8Online/stimul8"
+  spec.metadata["changelog_uri"] = "https://github.com/Collabor8Online/stimul8/commits/main"
 
   spec.files = Dir.chdir(File.expand_path(__dir__)) do
-    Dir["{app,config,db,lib}/**/*", "MIT-LICENSE", "Rakefile", "README.md"]
+    Dir["{app,config,db,lib}/**/*", "LICENSE", "Rakefile", "README.md"]
   end
 
   spec.add_dependency "rails", ">= 7.0.5"
