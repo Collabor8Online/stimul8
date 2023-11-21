@@ -1,6 +1,6 @@
 # Stimul8
 
-All the advantages of client-side components, plus with minimal Javascript and server-side rendering
+All the advantages of client-side components, with minimal Javascript plus server-side rendering
 
 * Design your user-interface from discrete components, each representing one small aspect of your application.  
 * Reuse common interface patterns and encapsulate styles.  
@@ -24,14 +24,14 @@ My aim is to:
 
 ## Usage
 
-To get started check out the [glossary](/docs/glossary).
+To get started check out the [glossary](/docs/glossary.md).
 
 Then: 
 * Open your Rails app
 * Add the gem to your Gemfile and `bundle``
 * [Configure](/docs/configuration.md) the gem to meet your needs
 * Create an `app/components` folder (or whatever you want to call it)
-* [Build your first component](/docs/passive_component.md)!
+* [Build your first component](/docs/passive_components.md)!
 
 ## Installation
 
@@ -69,7 +69,7 @@ Number One Rule - be nice.  We're all human beings, which means we're soft, squi
 
 ### Issues and Bug Reports and Feature Requests
 
-Use the [Github Issue Tracker](https://github.com/Collabor8Online/stimul8/issues) and post a friendly message explaining what you are looking for, where the gem currently falls short and, if you're able, some suggestions on how to solve it.  
+Use the [Github Issue Tracker](https://github.com/Collabor8Online/stimul8/issues) and post a friendly message explaining what you are looking for, where the gem currently falls short and, if you're able, some suggestions on how to get there.  
 
 ### Writing code
 
