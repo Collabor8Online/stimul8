@@ -12,9 +12,9 @@ export default class extends Controller {
     this.subscription.unsubscribe()
   }
 
-  async performAction(event) {
+  async callMethod(event) {
     event.preventDefault();
-    this.subscription.performAction(event.params)
+    this.subscription.callMethod(event.params)
   }
 }
 

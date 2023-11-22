@@ -50,7 +50,7 @@ $ bundle
 
 - [X] Rename model stuff to represents as it reads better
 - [ ] Finish off Actions
-  - [ ] Basic implementation
+  - [X] Basic implementation
   - [ ] Authorisation
   - [ ] Reactions - redraw, reload, redirect, animations, events
 - [ ] Active and Passive components

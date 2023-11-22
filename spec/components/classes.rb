@@ -53,7 +53,6 @@ end
 
 class ContentComponent
   include Stimul8::Component
-
   template do
     contents
   end
@@ -64,5 +63,22 @@ class EmbeddedComponent
   property :name
   template do
     component "name_badge", name: name
+  end
+end
+
+class PersonFormComponent
+  include Stimul8::Component
+  property :first_name
+  property :last_name
+
+  template do
+    form do
+      # Form stuff goes here
+    end
+  end
+
+  def update_person first_name:, last_name:
+    self.first_name = first_name
+    self.last_name = last_name
   end
 end

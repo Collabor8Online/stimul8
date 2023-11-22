@@ -22,8 +22,8 @@ export default componentSubscription = (componentId, componentClass, element) =>
       }
       // TODO: add in types for animations and events - and add event handlers to components
     },
-    performAction(params) {
-      this.perform("action", params)
+    callMethod(params) {
+      this.perform("call_method", params)
     }
   }
 );
