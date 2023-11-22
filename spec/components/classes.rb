@@ -66,32 +66,3 @@ class EmbeddedComponent
     component "name_badge", name: name
   end
 end
-
-class DefaultActionComponent
-  include Stimul8::Component
-  property :done, type: :boolean, default: false
-  template do
-    button action(:do_something)
-  end
-end
-
-class ActionParametersComponent
-  include Stimul8::Component
-  template do
-    button action(:do_something, first: "Parameter", second: "Another")
-  end
-end
-
-class EventHandlerComponent
-  include Stimul8::Component
-  template do
-    button action(:do_something, event: "click")
-  end
-end
-
-class MultipleEventHandlersComponent
-  include Stimul8::Component
-  template do
-    button action(:do_something, events: ["click", "change"])
-  end
-end

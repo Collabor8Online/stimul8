@@ -3,19 +3,24 @@ module Stimul8
     module Actions
       extend ActiveSupport::Concern
 
-      def action action_name, parameters = {}
-        action = if (event = parameters.delete(:event))
-          "#{event}->stimul8#callAction"
-        elsif (events = parameters.delete(:events))
-          Array.wrap(events).map { |e| "#{e}->stimul8#callAction" }.join(" ")
-        else
-          "stimul8#callAction"
+      def calls method_name, parameters = {}
+        data = {action: "stimul8#callMethod", stimul8_method_name_param: method_name}
+        if (events = parameters.delete(:on))
+          data[:action] = Array.wrap(events).map { |e| "#{e}->stimul8#callMethod" }.join(" ")
         end
-        data = {action: action, stimul8_action_param: action_name.to_s}
+
         parameters.each do |name, value|
           data[:"stimul8_#{name.to_s.underscore}_param"] = value
         end
         {data: data}
+      end
+
+      def call_method method_name, **parameters
+        method_name = method_name.to_sym
+        method = self.method method_name
+        method_parameters = method.parameters.map(&:last)
+        parameters = parameters.transform_keys { |key| key.to_s.underscore.to_sym }
+        send method_name.to_sym, **parameters.slice(*method_parameters)
       end
     end
   end

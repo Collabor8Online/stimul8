@@ -75,7 +75,7 @@ module Stimul8
       end
 
       def component_class
-        @component_class ||= self.class.name.underscore.dasherize.gsub("/", "--")
+        @component_class ||= self.class.name.to_s.underscore.dasherize.gsub("/", "--")
       end
 
       def css_class
