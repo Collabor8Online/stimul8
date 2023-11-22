@@ -15,12 +15,29 @@ module Stimul8
         {data: data}
       end
 
+      class_methods do
+        def authorise method_name, &authorisation_rule
+          authorisation_rules[method_name.to_sym] = authorisation_rule
+        end
+        alias_method :authorize, :authorise
+
+        def authorisation_rules
+          @authorisation_rules ||= {}
+        end
+      end
+
       def call_method method_name, **parameters
         method_name = method_name.to_sym
+        authorise! method_name
         method = self.method method_name
         method_parameters = method.parameters.map(&:last)
         parameters = parameters.transform_keys { |key| key.to_s.underscore.to_sym }
         send method_name.to_sym, **parameters.slice(*method_parameters)
+      end
+
+      def authorise! method_name
+        rule = self.class.authorisation_rules[method_name.to_sym]
+        raise AuthorisationError unless rule.nil? || instance_eval(&rule)
       end
     end
   end

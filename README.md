@@ -51,7 +51,7 @@ $ bundle
 - [X] Rename model stuff to represents as it reads better
 - [ ] Finish off Actions
   - [X] Basic implementation
-  - [ ] Authorisation
+  - [X] Authorisation
   - [ ] Reactions - redraw, reload, redirect, animations, events
 - [ ] Active and Passive components
 - [ ] Add support for slots

@@ -6,9 +6,30 @@ RSpec.describe "Interactions" do
     Class.new do
       include Stimul8::Component
       property :done, default: false, type: :boolean
+
       template do
         button calls(:do_something)
       end
+
+      def do_something
+        self.done = true
+      end
+    end
+  end
+
+  let(:authorised_action_class) do
+    Class.new do
+      include Stimul8::Component
+      property :done, default: false, type: :boolean
+
+      template do
+        button calls(:do_something)
+      end
+
+      authorise :do_something do
+        context == "Alice"
+      end
+
       def do_something
         self.done = true
       end
@@ -39,6 +60,15 @@ RSpec.describe "Interactions" do
 
       component.call_method :do_something
       expect(component).to be_done
+    end
+
+    it "raises an authorisation exception if the method is not authorised" do
+      alices_component = authorised_action_class.new context: "Alice"
+      alices_component.call_method :do_something
+      expect(alices_component).to be_done
+
+      bobs_component = authorised_action_class.new context: "Bob"
+      expect { bobs_component.call_method :do_something }.to raise_error Stimul8::AuthorisationError
     end
 
     context "with parameters" do
