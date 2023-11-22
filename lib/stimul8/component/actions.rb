@@ -4,13 +4,13 @@ module Stimul8
       extend ActiveSupport::Concern
 
       def calls method_name, parameters = {}
-        data = {action: "stimul8#callMethod", stimul8_method_name_param: method_name}
+        data = {action: "stimul8--component#callMethod", stimul8__component_method_name_param: method_name}
         if (events = parameters.delete(:on))
-          data[:action] = Array.wrap(events).map { |e| "#{e}->stimul8#callMethod" }.join(" ")
+          data[:action] = Array.wrap(events).map { |e| "#{e}->stimul8--component#callMethod" }.join(" ")
         end
 
         parameters.each do |name, value|
-          data[:"stimul8_#{name.to_s.underscore}_param"] = value
+          data[:"stimul8__component_#{name.to_s.underscore}_param"] = value
         end
         {data: data}
       end

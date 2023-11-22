@@ -120,9 +120,9 @@ module Stimul8
 
         @expanded_attributes = @attributes.except(:class)
         @expanded_attributes[:data] ||= {}
-        controller = ["stimul8", @expanded_attributes[:data][:controller]].compact.join(" ")
+        controller = ["stimul8--component", @expanded_attributes[:data][:controller]].compact.join(" ")
         @expanded_attributes[:data][:controller] = controller
-        @expanded_attributes[:data][:stimul8_class_name_value] = self.class.name
+        @expanded_attributes[:data][:stimul8__component_class_name_value] = self.class.name
         @expanded_attributes = @expanded_attributes.transform_keys do |key|
           key.to_s.dasherize.to_sym
         end

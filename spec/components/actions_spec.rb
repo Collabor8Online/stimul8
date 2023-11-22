@@ -99,13 +99,13 @@ RSpec.describe "Interactions" do
     it "attaches an action handler" do
       component = simple_action_class.new
       doc = Nokogiri::HTML component.to_html
-      expect(doc.css("div##{component.component_id} button[data-action=\"stimul8#callMethod\"][data-stimul8-method-name-param=\"do_something\"]")).to be_present
+      expect(doc.css("div##{component.component_id} button[data-action=\"stimul8--component#callMethod\"][data-stimul8--component-method-name-param=\"do_something\"]")).to be_present
     end
 
     it "attaches an action handler with parameters" do
       component = action_parameter_class.new first_name: "Alice", last_name: "Aardvark"
       doc = Nokogiri::HTML component.to_html
-      expect(doc.css("div##{component.component_id} button[data-action=\"stimul8#callMethod\"][data-stimul8-method-name-param=\"update_name\"][data-stimul8-first-name-param=\"Bob\"][data-stimul8-last-name-param=\"Badger\"]")).to be_present
+      expect(doc.css("div##{component.component_id} button[data-action=\"stimul8--component#callMethod\"][data-stimul8--component-method-name-param=\"update_name\"][data-stimul8--component-first-name-param=\"Bob\"][data-stimul8--component-last-name-param=\"Badger\"]")).to be_present
     end
 
     it "attaches a custom event handler" do
@@ -117,7 +117,7 @@ RSpec.describe "Interactions" do
       end
       component = component_class.new
       doc = Nokogiri::HTML component.to_html
-      expect(doc.css("div##{component.component_id} button[data-action=\"custom-component-event->stimul8#callMethod\"][data-stimul8-method-name-param=\"do_something\"]")).to be_present
+      expect(doc.css("div##{component.component_id} button[data-action=\"custom-component-event->stimul8--component#callMethod\"][data-stimul8--component-method-name-param=\"do_something\"]")).to be_present
     end
 
     it "attaches multiple event handlers" do
@@ -129,7 +129,7 @@ RSpec.describe "Interactions" do
       end
       component = component_class.new
       doc = Nokogiri::HTML component.to_html
-      expect(doc.css("div##{component.component_id} button[data-action=\"first-event->stimul8#callMethod second-event->stimul8#callMethod\"][data-stimul8-method-name-param=\"do_something\"]")).to be_present
+      expect(doc.css("div##{component.component_id} button[data-action=\"first-event->stimul8--component#callMethod second-event->stimul8--component#callMethod\"][data-stimul8--component-method-name-param=\"do_something\"]")).to be_present
     end
   end
 end
