@@ -5,6 +5,9 @@ module Stimul8
   class AuthorisationError < Error
   end
 
+  class MissingParameterError < Error
+  end
+
   require "stimul8/version"
   require "stimul8/engine"
   require "stimul8/storage"

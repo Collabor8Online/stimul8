@@ -53,6 +53,23 @@ RSpec.describe "Interactions" do
     end
   end
 
+  let(:missing_parameter_class) do
+    Class.new do
+      include Stimul8::Component
+      property :first_name
+      property :last_name
+
+      template do
+        button calls(:update_name, first_name: "Bob")
+      end
+
+      def update_name first_name:, last_name:
+        self.first_name = first_name
+        self.last_name = last_name
+      end
+    end
+  end
+
   context "calling methods remotely" do
     it "calls the method" do
       component = simple_action_class.new
@@ -108,11 +125,18 @@ RSpec.describe "Interactions" do
       expect(doc.css("div##{component.component_id} button[data-action=\"stimul8--component#callMethod\"][data-stimul8--component-method-name-param=\"update_name\"][data-stimul8--component-first-name-param=\"Bob\"][data-stimul8--component-last-name-param=\"Badger\"]")).to be_present
     end
 
+    it "raises an error if you omit mandatory parameters for the remote method call" do
+      component = missing_parameter_class.new first_name: "Alice", last_name: "Aardvark"
+      expect { component.to_html }.to raise_error(Stimul8::MissingParameterError)
+    end
+
     it "attaches a custom event handler" do
       component_class = Class.new do
         include Stimul8::Component
         template do
           button calls(:do_something, on: "custom-component-event")
+        end
+        def do_something
         end
       end
       component = component_class.new
@@ -125,6 +149,8 @@ RSpec.describe "Interactions" do
         include Stimul8::Component
         template do
           button calls(:do_something, on: ["first-event", "second-event"])
+        end
+        def do_something
         end
       end
       component = component_class.new
