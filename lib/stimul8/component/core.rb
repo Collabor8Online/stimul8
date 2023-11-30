@@ -142,8 +142,9 @@ module Stimul8
       end
 
       def render_erb
+        template_path = self.class.name.underscore.split("/")
         Stimul8::Component.erb_load_paths.each do |path|
-          erb_filename = File.join(path, self.class.name.demodulize.underscore) + ".html.erb"
+          erb_filename = File.join(path, *template_path) + ".html.erb"
           if File.exist?(erb_filename)
             erb = ERB.new(File.read(erb_filename))
             return Markaby::Builder.new({}, self) do

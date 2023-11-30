@@ -3,7 +3,7 @@ require_relative "erb_classes"
 
 RSpec.describe "Component rendering using ERB" do
   before do
-    Stimul8::Component.add_erb_load_path File.join(__dir__, "erb_templates")
+    Stimul8::Component.add_erb_load_path __dir__
   end
 
   it "renders based on the value of the supplied context" do
