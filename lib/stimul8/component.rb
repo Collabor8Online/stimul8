@@ -26,10 +26,21 @@ module Stimul8
         component.to_html.html_safe
       end
 
+      def erb_load_paths
+        @erb_load_paths ||= Set.new
+      end
+
+      def add_erb_load_path path
+        erb_load_paths.add path
+      end
+
       alias_method :c, :component
     end
 
     class NotFound < Stimul8::Error
+    end
+
+    class ErbTemplateNotFound < NotFound
     end
   end
 end

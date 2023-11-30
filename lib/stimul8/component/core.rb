@@ -2,6 +2,7 @@ module Stimul8
   module Component
     module Core
       require "markaby"
+      require "erb"
       extend ActiveSupport::Concern
 
       class_methods do
@@ -63,11 +64,7 @@ module Stimul8
 
       def to_html
         return "" unless render?
-        Markaby::Builder.new({}, self) do
-          tag! tag_name, id: component_id, class: css_class, **expanded_attributes do
-            instance_eval(&template)
-          end
-        end.to_s
+        template.nil? ? render_erb : render_ruby
       end
 
       def component_id
@@ -134,6 +131,29 @@ module Stimul8
 
       def == other
         other.component_id == component_id
+      end
+
+      def render_ruby
+        Markaby::Builder.new({}, self) do
+          tag! tag_name, id: component_id, class: css_class, **expanded_attributes do
+            instance_eval(&template)
+          end
+        end.to_s
+      end
+
+      def render_erb
+        Stimul8::Component.erb_load_paths.each do |path|
+          erb_filename = File.join(path, self.class.name.demodulize.underscore) + ".html.erb"
+          if File.exist?(erb_filename)
+            erb = ERB.new(File.read(erb_filename))
+            return Markaby::Builder.new({}, self) do
+              tag! tag_name, id: component_id, class: css_class, **expanded_attributes do
+                erb.result(binding)
+              end
+            end.to_s
+          end
+        end
+        raise Stimul8::Component::ErbTemplateNotFound.new("Could not find an ERB template for #{self.class.name} in #{Stimul8::Component.erb_load_paths.to_a.join(", ")}")
       end
     end
   end
