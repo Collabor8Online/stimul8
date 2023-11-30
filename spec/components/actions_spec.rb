@@ -1,5 +1,4 @@
 require "rails_helper"
-require_relative "classes"
 
 RSpec.describe "Interactions" do
   let(:simple_action_class) do

@@ -1,5 +1,4 @@
 require "rails_helper"
-require_relative "classes"
 
 RSpec.describe "Component storage" do
   context "in-memory storage" do

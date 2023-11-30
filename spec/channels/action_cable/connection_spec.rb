@@ -1,5 +1,5 @@
 require "rails_helper"
-require_relative "../../components/classes"
+require_relative "../../components/ruby_classes"
 
 RSpec.describe ApplicationCable::Connection, type: :channel do
   it "connects without a context" do

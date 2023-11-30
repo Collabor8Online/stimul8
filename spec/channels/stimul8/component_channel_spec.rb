@@ -1,5 +1,5 @@
 require "rails_helper"
-require_relative "../../components/classes"
+require_relative "../../components/ruby_classes"
 
 RSpec.describe Stimul8::ComponentChannel, type: :channel do
   before do

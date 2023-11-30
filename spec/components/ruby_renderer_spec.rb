@@ -1,7 +1,7 @@
 require "rails_helper"
-require_relative "classes"
+require_relative "ruby_classes"
 
-RSpec.describe "Component rendering" do
+RSpec.describe "Component rendering using Ruby" do
   it "renders based on the value of the supplied context" do
     component = ConditionalRenderComponent.new context: "Alice"
     expect(component.to_html).to include("Hello")

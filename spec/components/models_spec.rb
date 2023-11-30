@@ -1,5 +1,4 @@
 require "rails_helper"
-require_relative "classes"
 
 RSpec.describe "Linking components to models" do
   it "finds its models using an ID" do
