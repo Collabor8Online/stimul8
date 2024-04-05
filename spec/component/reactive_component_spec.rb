@@ -43,7 +43,6 @@ RSpec.describe Stimul8::ReactiveComponent do
   it "publishes changes to another observer" do
     publisher = Class.new do
       include Dry::Events::Publisher[:publishing_changes_to_another_observer]
-      register_event "name.changed"
     end
 
     events = publisher.new
@@ -77,5 +76,38 @@ RSpec.describe Stimul8::ReactiveComponent do
     greetings.name = "Bob"
 
     expect(@new_name).to eq "Bob"
+  end
+
+  it "notifies an observer that it requires redrawing" do
+    publisher = Class.new do
+      include Dry::Events::Publisher[:notifies_an_observer_that_it_requires_redrawing]
+    end
+
+    events = publisher.new
+
+    greetings_component = Class.new(Stimul8::ReactiveComponent) do
+      publish "redraw", to: events
+      attr_reader :name
+
+      def initialize name: "World"
+        super()
+        @name = name
+      end
+
+      def template
+        p { "Hello #{@name}" }
+      end
+    end
+
+    greetings = greetings_component.new name: "Alice"
+
+    @redraw_triggered = nil
+    events.subscribe "redraw" do |event|
+      @redraw_triggered = true
+    end
+
+    greetings.redraw
+
+    expect(@redraw_triggered).to eq true
   end
 end

@@ -33,6 +33,10 @@ module Stimul8
       observer&.publish event, **params
     end
 
+    def redraw
+      notify_observers "redraw"
+    end
+
     private
 
     def observable
