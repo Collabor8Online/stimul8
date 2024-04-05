@@ -16,7 +16,6 @@ module Stimul8
       def publish *events, to:
         @observer = Observer[to]
         events.each do |event|
-          puts "Registering #{event} on #{@observer.inspect}"
           @observer.register_event event
         end
       end

@@ -71,7 +71,6 @@ RSpec.describe Stimul8::ReactiveComponent do
 
     @new_name = nil
     events.subscribe "name.changed" do |event|
-      puts "I got #{event.inspect}"
       @new_name = event[:name]
     end
 
